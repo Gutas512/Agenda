@@ -1,0 +1,220 @@
+<?php
+session_start();
+include('valida.php');
+?>
+
+<?php
+if (isset($_POST["concod"])) {
+
+    $concod = $_POST["concod"];
+
+    if (!empty($concod)) {
+
+        include("Conexão.php");
+
+        $sqlconuf = "SELECT ema_email
+        FROM tbl_email e
+        INNER JOIN tbl_contatos c ON e.con_codigo = c.con_codigo
+        WHERE e.con_codigo = '$concod'";
+        $queryconuf = mysqli_query($conn, $sqlconuf);
+        $resulta = mysqli_num_rows($queryconuf);
+    }
+}
+
+
+?>
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agenda de Contato</title>
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Consulta de telefone</title>
+        <style>
+            header {
+                background-color: purple;
+                ;
+                color: solid rgba(0, 0, 0, 0.425);
+                ;
+                text-align: center;
+                padding: 1em;
+            }
+
+            body {
+                font-family: Arial, sans-serif;
+            }
+
+            fieldset {
+                margin-bottom: 20px;
+            }
+
+            label {
+                display: block;
+                margin-bottom: 8px;
+            }
+
+            input,
+            select {
+                width: 100%;
+                padding: 8px;
+                box-sizing: border-box;
+                margin-bottom: 16px;
+            }
+
+            table {
+                border-collapse: collapse;
+                width: 100%;
+            }
+
+            th,
+            td {
+                border: 1px solid #ddd;
+                padding: 10px;
+                text-align: left;
+            }
+
+            th {
+                background-color: #f2f2f2;
+            }
+
+            .btn {
+                cursor: pointer;
+                padding: 6px 10px;
+                background-color: #007bff;
+                color: #fff;
+                border: none;
+                border-radius: 4px;
+            }
+
+            nav {
+                background-color: darkslategray;
+                padding: 1em;
+            }
+
+            nav a {
+                color: floralwhite;
+                text-decoration: none;
+                padding: 0.5em 1em;
+                margin-right: 10px;
+                border-radius: 5px;
+                background-color: rgb(138, 90, 138);
+            }
+
+            nav a:hover {
+                background-color: rgb(3, 137, 255);
+            }
+
+            footer {
+                background-color: black;
+                color: azure;
+                text-align: center;
+                padding: 1em;
+                position: flex;
+                bottom: 0;
+                width: 100%;
+            }
+        </style>
+    </head>
+
+<body>
+
+    <header>
+        <h1>Agenda de Contatos</h1>
+        <img src="lupa.png" alt="consultas" width="100" height="100">
+    </header>
+
+    <nav>
+        <a href="Principal.php">Home</a>
+        <a href="contatos.php">Cadastrar contatos</a>
+        <a href="cidade.php">Cadastro de cidades</a>
+        <a href="consultas.php">consultas</a>
+        <a href="logout.php">Sair</a>
+    </nav>
+
+    <h2>Consulta de Email</h2>
+
+    <?php
+    include("Conexão.php");
+    ?>
+
+    <div id="status"></div>
+
+    <form name="cidadeform" action="Emailporcontato.php" method="post" id="cidadeform">
+        <fieldset>
+            <legend>Consulta de Email por contato</legend>
+
+            <label for="uf1" id="uf1">Escolha o Contato:</label>
+            <select name="concod" id="concod" required>
+      <option value=""></option>
+      <?php
+        $sqlcidades = "Select * from tbl_Contatos order by con_nome";
+        $querycidades = mysqli_query($conn,$sqlcidades);
+        $resulta1 = mysqli_num_rows($querycidades);
+        if ($resulta1>0) {
+             $i = 0;
+             while ($linhacidade = mysqli_fetch_array($querycidades)) {
+                 $i++;
+
+            print"
+             <option value=\"$linhacidade[0]\">$linhacidade[1]</option>";
+             }
+            }
+        ?>
+      </select>
+
+
+        </fieldset>
+        <input type="submit" value="Consultar">
+
+    </form>
+
+
+    <fieldset>
+        <legend>Email do contato :</legend>
+        <table id="contatosTable">
+            <thead>
+                <tr>
+                    <th>E-mail</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                include("Conexão.php");
+
+                if (isset($resulta)) {
+
+                    if ($resulta > 0) {
+                        $i = 0;
+                        while ($linhaconuf = mysqli_fetch_array($queryconuf)) {
+                            $i++;
+                ?>
+                            <tr>
+
+                    <?php
+                            print "
+                <td>
+                <strong>$linhaconuf[0]</strong>
+                </td>";
+                        }
+                    }
+                }
+                    ?>
+                            </tr>
+            </tbody>
+        </table>
+    </fieldset>
+
+
+
+    <footer>
+        <p>&copy; 2024[AS]</p>
+    </footer>
+
+</body>
+
+</html>
