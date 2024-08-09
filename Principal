@@ -1,0 +1,91 @@
+<?php
+session_start();
+include('valida.php');
+?>
+
+
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agenda de contatos</title>
+    <style>
+        body{
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0%;
+            background-color: rgb(255, 255, 255);
+        }
+
+        header{
+            background-color:  purple;
+            color: solid rgba(0, 0, 0, 0.425);
+            text-align: center;
+            padding: 1em;
+        }
+
+        nav{
+            background-color: darkslategray;
+            padding: 1em;
+        }
+
+        nav a { 
+            color: floralwhite;
+            text-decoration: none;
+            padding: 0.5em 1em;
+            margin-right: 10px;
+            border-radius: 5px;
+            background-color: rgb(138, 90, 138);
+        }
+
+        nav a:hover {
+            background-color: rgb(3, 137, 255);
+        }
+
+        section{
+            padding: 20px;
+        }
+
+        footer{
+            background-color: black;
+            color: azure;
+            text-align: center;
+            padding: 1em;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+
+
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Agenda de contatos</h1>
+        <img src="we-removebg-preview.png" alt="bem vindo" width="250" height="100">
+    </header>
+
+    <nav>
+        <a href="Principal.php">Home</a>
+        <a href="contatos.php">Cadastrar contatos</a>
+        <a href="cidade.php">Cadastro de cidades</a>
+        <a href="consultas.php">consultas</a>
+        <a href="logout.php">Sair</a>
+    </nav>
+
+    <section>
+        <h2>Seja bem vindo a Agenda</h2>
+        <p>Aqui você podera Cadastrar seus contatos!!!</p>
+        <p>Basta clicar em Cadastrar contatos!</p>
+    </section>
+
+    <footer>
+        <p>&copy; 2024[AS]
+    </footer>
+</body>
+
+</html>
