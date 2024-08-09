@@ -1,0 +1,54 @@
+<?php
+if(isset($_SESSION["nomeusu"]))
+	$nomeusu = $_SESSION["nomeusu"]; 
+	
+if(isset($_SESSION["senhaadm"]))
+	$senhaadm = $_SESSION["senhaadm"];
+	
+	if(!(empty($nomeusu) || empty($senhaadm))){
+	
+		require("Conexão.php");	
+		$sql = "SELECT * 
+                FROM tbl_usuarios 
+                WHERE usu_username='$nomeusu'";
+		
+		// Executa a query
+		$query = mysqli_query($conn, $sql);
+		
+		// Retorna o numero de linhas
+		$result = mysqli_num_rows($query);
+		
+		// Se achou o usuario
+		if( $result == 1){
+		
+			// Passa os valores do resultado para o array $linha
+			$linha = mysqli_fetch_array($query);
+			
+			// Se a senha esta correta
+			if($senhaadm != $linha['usu_password']){
+				session_destroy();
+				echo "<script type='text/javascript'>
+						alert('Voce não efetuou o login!!');
+						exit;
+					  </script>";
+				header("Location:Agendatrue.php");	  
+				}
+			} else {
+				session_destroy();
+				echo "<script type='text/javascript'>
+						alert('Voce não efetuou o login!!');
+						exit;
+					  </script>";
+				header("Location:Agendatrue.php");
+			}
+		}
+		else { // Se o usuario não existe
+				session_destroy();
+			    echo "<script type='text/javascript'>
+						alert('Voce não efetuou o login!!');
+						exit;
+					  </script>";
+			    header("Location:Agendatrue.php");	
+		    }
+	
+?>
