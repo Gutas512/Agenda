@@ -1,0 +1,21 @@
+<?php
+include("Conexão.php");
+
+$nomeusu = $_POST["nomeusu"];
+$nomelogin = $_POST["nomelogin"];
+$senhas = $_POST["senhas"];
+$id = $_POST["id"];
+
+
+$sql = "UPDATE tbl_usuarios SET usu_nome='$nomeusu', usu_username='$nomelogin',usu_password='$senhas' WHERE usu_codigo='$id'";
+
+if (mysqli_query($conn, $sql)) {
+      echo "Registro Alterado com Sucesso!";
+} else {
+      echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+}
+
+
+mysqli_close($conn);
+
+?>
