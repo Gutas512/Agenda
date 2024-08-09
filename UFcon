@@ -1,0 +1,19 @@
+<?php
+include("Conexão.php");
+
+$uf2 = $_POST["uf2"];
+
+
+$sql = "SELECT c.con_nome, c.con_endereco, cid.cid_nome, cid.cid_uf
+FROM tbl_contatos c
+INNER JOIN tbl_Cidade cid ON c.cid_codigo = cid.cid_codigo
+WHERE cid.cid_uf = $linhacidade[0]
+ORDER BY c.con_nome ASC";
+
+if (mysqli_query($conn, $sql)) {
+    echo "consulta com Sucesso!";
+} else {
+    echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+}
+mysqli_close($conn);
+?>;
