@@ -1,0 +1,42 @@
+<?php
+      session_start();
+
+      $nomeusu = $_POST["nomeusu"];
+      $senhaadm = $_POST["senhaadm"];
+
+      $nomeusu = trim($nomeusu);
+      $senhaadm = trim($senhaadm);
+
+      if(empty($nomeusu) || empty($senhaadm)){
+            echo "<script type='text/javascript'>
+                alert('Dados em branco! Digite o username ea senha!!!');
+                history.back(1);
+            </script>";
+}
+else{
+    include("Conexão.php");
+    $sql = "select * from tbl_usuarios
+            where usu_username = '$nomeusu' and usu_password = '$senhaadm'";
+    $query = mysqli_query($conn, $sql);
+    $resultado = mysqli_num_rows($query);
+
+
+if($resultado==0){
+    echo "<script type='text/javascript'>
+        alert('Dados errados! tente novamente');
+        history.back(1);
+    </script>";
+}
+else{
+    $linha=mysqli_fetch_array($query);
+
+    $_SESSION["nomeusuario"] = $linha['usu_nome'];
+    $_SESSION["nomeusu"] = $linha['usu_username'];
+    $_SESSION["senhaadm"] = $linha['usu_password'];
+    $_SESSION["codigo"] = $linha['usu_codigo'];
+
+    print "logouuuuuuuuuuuu!!!!";
+
+    header("Location:Principal.php");
+}
+}
