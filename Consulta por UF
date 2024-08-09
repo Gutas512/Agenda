@@ -1,0 +1,250 @@
+<?php
+session_start();
+include('valida.php');
+?>
+
+<?php
+if (isset($_POST["uf"])) {
+
+    $uf = $_POST["uf"];
+
+    if (!empty($uf)) {
+
+        include("Conexão.php");
+
+        $sqlconuf = "SELECT con.con_nome As Nome,
+                                 con.con_endereco As Endereço,
+                                 cid.cid_nome as Cidade,
+                                 cid.cid_uf as Estado
+                            FROM tbl_cidade cid,
+                                 tbl_contatos con
+                            WHERE cid.cid_codigo=con.cid_codigo AND
+                                  cid.cid_uf = '$uf'";
+        $queryconuf = mysqli_query($conn, $sqlconuf);
+        $resulta = mysqli_num_rows($queryconuf);
+    }
+}
+
+
+?>
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agenda de Contato</title>
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Cadastro de cidades</title>
+        <style>
+            header {
+                background-color: purple;
+                ;
+                color: solid rgba(0, 0, 0, 0.425);
+                ;
+                text-align: center;
+                padding: 1em;
+            }
+
+            body {
+                font-family: Arial, sans-serif;
+            }
+
+            fieldset {
+                margin-bottom: 20px;
+            }
+
+            label {
+                display: block;
+                margin-bottom: 8px;
+            }
+
+            input,
+            select {
+                width: 100%;
+                padding: 8px;
+                box-sizing: border-box;
+                margin-bottom: 16px;
+            }
+
+            table {
+                border-collapse: collapse;
+                width: 100%;
+            }
+
+            th,
+            td {
+                border: 1px solid #ddd;
+                padding: 10px;
+                text-align: left;
+            }
+
+            th {
+                background-color: #f2f2f2;
+            }
+
+            .btn {
+                cursor: pointer;
+                padding: 6px 10px;
+                background-color: #007bff;
+                color: #fff;
+                border: none;
+                border-radius: 4px;
+            }
+
+            nav {
+                background-color: darkslategray;
+                padding: 1em;
+            }
+
+            nav a {
+                color: floralwhite;
+                text-decoration: none;
+                padding: 0.5em 1em;
+                margin-right: 10px;
+                border-radius: 5px;
+                background-color: rgb(138, 90, 138);
+            }
+
+            nav a:hover {
+                background-color: rgb(3, 137, 255);
+            }
+
+            footer {
+                background-color: black;
+                color: azure;
+                text-align: center;
+                padding: 1em;
+                position: flex;
+                bottom: 0;
+                width: 100%;
+            }
+        </style>
+    </head>
+
+<body>
+
+    <header>
+        <h1>Agenda de Contatos</h1>
+        <img src="lupa.png" alt="consultas" width="100" height="100">
+    </header>
+
+    <nav>
+        <a href="Principal.php">Home</a>
+        <a href="contatos.php">Cadastrar contatos</a>
+        <a href="cidade.php">Cadastro de cidades</a>
+        <a href="consultas.php">consultas</a>
+        <a href="logout.php">Sair</a>
+    </nav>
+    <h2>Cadastro de Cidades</h2>
+
+    <?php
+    include("Conexão.php");
+    ?>
+
+    <div id="status"></div>
+
+    <form name="cidadeform" action="consulta por UF.php" method="post" id="cidadeform">
+        <fieldset>
+            <legend>Consulta de Contatos por UF</legend>
+
+            <label for="uf1" id="uf1">Escolha o UF:</label>
+            <select name="uf" id="uf" required>
+                <option value=""></option>
+                <option value="AC">AC</option>
+                <option value="AL">AL</option>
+                <option value="AM">AM</option>
+                <option value="AP">AP</option>
+                <option value="BA">BA</option>
+                <option value="CE">CE</option>
+                <option value="DF">DF</option>
+                <option value="ES">ES</option>
+                <option value="GO">GO</option>
+                <option value="MA">MA</option>
+                <option value="MT">MT</option>
+                <option value="MS">MS</option>
+                <option value="MG">MG</option>
+                <option value="PA">PA</option>
+                <option value="PB">PB</option>
+                <option value="PR">PR</option>
+                <option value="PE">PE</option>
+                <option value="PI">PI</option>
+                <option value="RJ">RJ</option>
+                <option value="RN">RN</option>
+                <option value="RS">RS</option>
+                <option value="RO">RO</option>
+                <option value="RR">RR</option>
+                <option value="SC">SC</option>
+                <option value="SP">SP</option>
+                <option value="SE">SE</option>
+                <option value="TO">TO</option>
+
+
+            </select>
+
+
+        </fieldset>
+        <input type="submit" value="Consultar">
+
+    </form>
+
+
+    <fieldset>
+        <legend>Contatos do UF:</legend>
+        <table id="contatosTable">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Endereço</th>
+                    <th>Cidade</th>
+                    <th>UF</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                include("Conexão.php");
+
+                if (isset($resulta)) {
+
+                    if ($resulta > 0) {
+                        $i = 0;
+                        while ($linhaconuf = mysqli_fetch_array($queryconuf)) {
+                            $i++;
+                ?>
+                            <tr>
+
+                    <?php
+                            print "
+                <td>
+                <strong>$linhaconuf[0]</strong>
+                </td>
+                <td>
+                <strong>$linhaconuf[1]</strong>
+                </td>
+                <td>
+                <strong>$linhaconuf[2]</strong>
+                </td>
+                <td>
+                <strong>$linhaconuf[3]</strong>
+                </td>";
+                        }
+                    }
+                }
+                    ?>
+                            </tr>
+            </tbody>
+        </table>
+    </fieldset>
+
+
+
+    <footer>
+        <p>&copy; 2024[AS]</p>
+    </footer>
+
+</body>
+
+</html>
