@@ -1,0 +1,20 @@
+<?php
+include("Conexão.php");
+
+$cidnome = $_GET["nomecid"];
+$uf      = $_GET["uf"];
+$codigocid = $_GET["id"];
+
+
+$sql = "UPDATE tbl_contatos SET con_nome='$cidnome', con_endereco='$uf' WHERE con_codigo='$codigocid'";
+
+if (mysqli_query($conn, $sql)) {
+      echo "Registro Alterado com Sucesso!";
+} else {
+      echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+}
+
+
+mysqli_close($conn);
+
+?>
