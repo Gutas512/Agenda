@@ -1,0 +1,39 @@
+<?php
+include("Conexão.php");
+
+$nomecli = $_POST["nomecli"];
+$endereco = $_POST["endereco"];
+$codcid = $_POST["codcid"];
+$numeroTelefone = $_POST["numeroTelefone"];
+$endemail = $_POST["endemail"];
+
+$sql = "INSERT INTO tbl_contatos (con_nome, con_endereco, cid_codigo)
+        VALUES ('".$nomecli."','".$endereco."','".$codcid."')";
+
+if (mysqli_query($conn, $sql)) {
+      echo "Registro inserido com Sucesso!";
+
+      $sqlcodigo ="SELECT MAX(con_codigo)
+                   FROM tbl_contatos";
+      $querycodigo = mysqli_query($conn, $sqlcodigo);
+      $linhacodigo = mysqli_fetch_array($querycodigo);
+
+      foreach ($numeroTelefone as $fone) {
+
+            $sql_telefone = "INSERT INTO tbl_telefone (tel_numero, con_codigo)
+                                 VALUES ('".$fone."','".$linhacodigo[0]."')";
+            $queryfone = mysqli_query($conn, $sql_telefone);
+      }
+
+      foreach ($endemail as $emails) {
+
+            $sql_email = "INSERT INTO tbl_email (ema_email, con_codigo)
+                                 VALUES ('".$emails."','".$linhacodigo[0]."')";
+            $queryemail = mysqli_query($conn, $sql_email);
+      }
+
+} else {
+      echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+}
+mysqli_close($conn);
+?>
